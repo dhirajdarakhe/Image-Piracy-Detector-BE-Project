@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import auth, User
+from panel.views import Dashboard
 
 # Create your views here.
 
@@ -41,10 +42,3 @@ def Home(request):
             }
             register(params)
     return render(request,"home.htm", context={"title":"Home", "params" : params})
-
-def Dashboard(request):
-    if not request.user.is_authenticated: 
-        messages.warning(request,"Login First!")
-        return redirect(Home)
-    else:
-        return render(request,"dashboard.htm")
