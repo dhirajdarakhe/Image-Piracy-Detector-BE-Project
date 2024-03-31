@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import auth, User
-from panel.views import Dashboard
 
 # Create your views here.
 
@@ -29,7 +28,7 @@ def Home(request):
                 user = auth.authenticate(username=_user.username, password=params["password"])
                 if user is not None:
                     auth.login(request, user)
-                    return redirect(Dashboard)
+                    return redirect('/dashboard')
                 else:
                     messages.error(request, "Invalid Credentials")
             else:
@@ -40,5 +39,9 @@ def Home(request):
                 "password" : request.POST["password"], 
                 "cpassword" : request.POST["cpassword"]
             }
-            register(params)
+            register(request, params)
     return render(request,"home.htm", context={"title":"Home", "params" : params})
+
+def Logout(request):
+    auth.logout(request)
+    return redirect('/')
